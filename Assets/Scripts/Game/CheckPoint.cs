@@ -12,8 +12,7 @@ namespace Game
         {
             _levelManager = FindObjectOfType<LevelManager>();
         }
-
-
+        
         public void OnTriggerEnter(Collider other)
         {
             if (other.name == "Player")
