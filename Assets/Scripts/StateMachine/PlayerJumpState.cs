@@ -52,9 +52,11 @@ public class PlayerJumpState : PlayerBaseState, IRootState
 
     private void HandleJump()
     {
+        float initialJumpVelocity = 4 * Ctx.MaxJumpHeight / Ctx.MaxJumpTime ;
         Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
-        Ctx.CurrentMovementY = Ctx.InitialJumpVelocity;
-        Ctx.AppliedMovementY = Ctx.InitialJumpVelocity;
+        Ctx.CurrentMovementY = initialJumpVelocity;
+        Ctx.AppliedMovementY = initialJumpVelocity;
+        Ctx.Gravity = (-2 * Ctx.MaxJumpHeight) / Mathf.Pow(Ctx.MaxJumpTime/2, 2);
     }
 
     public void HandleGravity()

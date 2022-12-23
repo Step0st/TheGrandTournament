@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PlayerMovingState : PlayerBaseState
 {
     public PlayerMovingState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
@@ -10,7 +12,7 @@ public class PlayerMovingState : PlayerBaseState
 
     public override void UpdateState()
     {
-        Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x;
+        Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x * Ctx.Speed;
         CheckSwitchStates();
     }
 

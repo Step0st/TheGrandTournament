@@ -33,6 +33,11 @@ public class PlayerFallState : PlayerBaseState, IRootState
         {
             SwitchState(Factory.Grounded());
         }
+
+        if (Ctx.IsMovementPressed)
+        {
+            SwitchState(Factory.Moving());
+        }
     }
 
     public override void InitializeSubState()

@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 public class PlayerStateMachine : MonoBehaviour
 {
     private PlayerInput _playerInput;
+    private PlayerInputReader _playerInputReader;
     private CharacterController _characterController;
     private Animator _animator;
+    private RotationHandler _rotationHandler;
     private int _isMovingHash;
     private int _isJumpingHash;
     private bool _requireNewJumpPress = false;
@@ -22,7 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private bool _isJumpPressed = false;
     private bool _isJumping = false;
-    private float _initialJumpVelocity;
+    //private float _initialJumpVelocity;
     [SerializeField] private float _maxJumpHeight = 4.0f;
     [SerializeField] private float _maxJumpTime = 0.5f;
 
@@ -39,16 +41,23 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsJumpPressed { get { return _isJumpPressed;}}
     public bool IsMovementPressed { get { return _isMovementPressed;}}
     public bool RequireNewJumpPress { get { return _requireNewJumpPress;} set { _requireNewJumpPress = value; }}
-    public float Gravity { get { return _gravity;}}
+    public float Gravity { get { return _gravity;} set{ _gravity = value;}}
+    public float Speed { get { return _speed;}}
+    public float RotationPerFrame { get { return _rotationPerFrame;}}
+    public float MaxJumpHeight { get { return _maxJumpHeight;}}
+    public float MaxJumpTime { get { return _maxJumpTime;}}
     public float CurrentMovementY { get { return _currentMovement.y;} set { _currentMovement.y = value; }}
+    //public float CurrentMovementX { get { return _currentMovement.x;} set { _currentMovement.x = value; }}
     public float AppliedMovementY { get { return _appliedMovement.y;} set { _appliedMovement.y = value; }}
     public float AppliedMovementX { get { return _appliedMovement.x;} set { _appliedMovement.x = value; }}
-    public float InitialJumpVelocity { get { return _initialJumpVelocity;}}
+    //public float InitialJumpVelocity { get { return _initialJumpVelocity;}}
     
     
     private void Awake()
     {
-        _playerInput = new PlayerInput();
+        //_playerInput = new PlayerInput();
+        _playerInputReader = gameObject.AddComponent<PlayerInputReader>();
+        _rotationHandler = new RotationHandler();
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
 
@@ -59,13 +68,27 @@ public class PlayerStateMachine : MonoBehaviour
         _isMovingHash = Animator.StringToHash("IsMoving");
         _isJumpingHash = Animator.StringToHash("IsJumping");
 
-        _playerInput.CharacterControls.Move.started += OnMovementInput;
-        _playerInput.CharacterControls.Move.canceled += OnMovementInput;
-        _playerInput.CharacterControls.Move.performed += OnMovementInput;
-        _playerInput.CharacterControls.Jump.started += OnJump;
-        _playerInput.CharacterControls.Jump.canceled += OnJump;
+
+        _playerInputReader.OnMoving += (movementVector, movementButtonPressed) =>
+        {
+            _currentMovementInput = movementVector;
+            _isMovementPressed = movementButtonPressed;
+        };
+        _playerInputReader.OnJumpPressed += (jumpButtonPressed) =>
+        {
+            _isJumpPressed = jumpButtonPressed;
+            _requireNewJumpPress = false;
+        };
         
-        SetupJumpVariables();
+        //_currentMovementInput = _playerInputReader.movementInput;
+        //_isMovementPressed = _playerInputReader.isMovementPressed;
+        //_isJumpPressed = _playerInputReader.isJumpPressed;
+        
+        // _playerInput.CharacterControls.Move.started += OnMovementInput;
+        // _playerInput.CharacterControls.Move.canceled += OnMovementInput;
+        // _playerInput.CharacterControls.Move.performed += OnMovementInput;
+        // _playerInput.CharacterControls.Jump.started += OnJump;
+        // _playerInput.CharacterControls.Jump.canceled += OnJump;
     }
 
     private void Start()
@@ -75,53 +98,31 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        
-        
-        HandleRotation();
+        _rotationHandler.HandleRotation(this);
         _currentState.UpdateStates();
         _characterController.Move(_appliedMovement * Time.deltaTime);
     }
 
-    private void SetupJumpVariables()
+    /*private void OnMovementInput(InputAction.CallbackContext context)
     {
-        float timeToApex = _maxJumpTime / 2;
-        _gravity = (-2 * _maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-        _initialJumpVelocity = (2 * _maxJumpHeight) / timeToApex;
-    }
-    
-    private void OnMovementInput(InputAction.CallbackContext context)
-    {
-        _currentMovementInput = context.ReadValue<Vector2>();
-        _currentMovement.x = _currentMovementInput.x * _speed;
-        _isMovementPressed = _currentMovement.x != 0;
+        //_currentMovementInput = context.ReadValue<Vector2>();
+        _currentMovementInput = _playerInputReader.movementInput;
+        _isMovementPressed = _currentMovementInput.x != 0;
     }
     
     private void OnJump(InputAction.CallbackContext context)
     {
         _isJumpPressed = context.ReadValueAsButton();
         _requireNewJumpPress = false;
-    }
-    
-    private void HandleRotation()
-    {
-        Vector3 positionToLookAt = new Vector3(_currentMovement.x, 0,0);
-        Quaternion currentRotation = transform.rotation;
-        if (_isMovementPressed)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
-            transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationPerFrame*Time.deltaTime);
-        }
-    }
-    
-    private void OnEnable()
-    {
-        _playerInput.CharacterControls.Enable();
-    }
+    }*/
 
-    private void OnDisable()
-    {
-        _playerInput.CharacterControls.Disable();
-    }
-
-    
+    // private void OnEnable()
+    // {
+    //     _playerInput.CharacterControls.Enable();
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     _playerInput.CharacterControls.Disable();
+    // }
 }
