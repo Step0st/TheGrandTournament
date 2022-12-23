@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 public class PlayerStateFactory
 {
-    private PlayerStateMachine _context;
+    private PlayerController _context;
     private Dictionary<PlayerStates, PlayerBaseState> _states = new Dictionary<PlayerStates, PlayerBaseState>();
     
-    public PlayerStateFactory(PlayerStateMachine currentContext)
+    public PlayerStateFactory(PlayerController currentContext)
     {
         _context = currentContext;
         _states[PlayerStates.idle] = new PlayerIdleState(_context, this);

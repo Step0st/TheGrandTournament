@@ -2,19 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInputReader : MonoBehaviour
+public class PlayerInputReader
 {
     private PlayerInput _playerInput;
-    public Vector2 movementInput;
-    public bool isJumpPressed;
-    public bool isMovementPressed;
+    private Vector2 _movementInput;
+    private bool _isJumpPressed;
+    private bool _isMovementPressed;
     public Action<Vector2, bool> OnMoving;
     public Action<bool> OnJumpPressed;
-    //public Action<bool> OnMovementPressed;
-
-    private void Awake()
+    
+    public void Initialize()
     {
         _playerInput = new PlayerInput();
+        _playerInput.CharacterControls.Enable();
         _playerInput.CharacterControls.Move.started += OnMovementInput;
         _playerInput.CharacterControls.Move.canceled += OnMovementInput;
         _playerInput.CharacterControls.Move.performed += OnMovementInput;
@@ -24,24 +24,14 @@ public class PlayerInputReader : MonoBehaviour
 
     public void OnMovementInput(InputAction.CallbackContext context)
     {
-        movementInput = context.ReadValue<Vector2>();
-        isMovementPressed = movementInput.x != 0;
-        OnMoving?.Invoke(movementInput, isMovementPressed);
+        _movementInput = context.ReadValue<Vector2>();
+        _isMovementPressed = _movementInput.x != 0;
+        OnMoving?.Invoke(_movementInput, _isMovementPressed);
     }   
     
     private void OnJump(InputAction.CallbackContext context)
     {
-        isJumpPressed = context.ReadValueAsButton();
-        OnJumpPressed?.Invoke(isJumpPressed);
-    }
-    
-    private void OnEnable()
-    {
-        _playerInput.CharacterControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _playerInput.CharacterControls.Disable();
+        _isJumpPressed = context.ReadValueAsButton();
+        OnJumpPressed?.Invoke(_isJumpPressed);
     }
 }

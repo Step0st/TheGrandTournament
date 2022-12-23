@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState, IRootState
+public class PlayerJumpState : PlayerBaseState, IGravityHandler, IRotationHandler, IMovementHandler
 {
-    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerJumpState(PlayerController currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory)
     {
         IsRootState = true;
@@ -18,6 +18,8 @@ public class PlayerJumpState : PlayerBaseState, IRootState
     public override void UpdateState()
     {
         HandleGravity();
+        HandleMovement();
+        HandleRotation();
         CheckSwitchStates();
     }
 
@@ -52,7 +54,7 @@ public class PlayerJumpState : PlayerBaseState, IRootState
 
     private void HandleJump()
     {
-        float initialJumpVelocity = 4 * Ctx.MaxJumpHeight / Ctx.MaxJumpTime ;
+        float initialJumpVelocity = 4 * Ctx.MaxJumpHeight / Ctx.MaxJumpTime;
         Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
         Ctx.CurrentMovementY = initialJumpVelocity;
         Ctx.AppliedMovementY = initialJumpVelocity;
@@ -61,20 +63,16 @@ public class PlayerJumpState : PlayerBaseState, IRootState
 
     public void HandleGravity()
     {
-        bool isFalling = Ctx.CurrentMovementY <= 0.0f || !Ctx.IsJumpPressed;
-        float fallMultiplier = 2.0f;
-
-        if (isFalling)
-        {
-            float previousYVelocity = Ctx.CurrentMovementY;
-            Ctx.CurrentMovementY += (Ctx.Gravity * fallMultiplier * Time.deltaTime);
-            Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * 0.5f, -20.0f);
-        }
-        else
-        {
-            float previousYVelocity = Ctx.CurrentMovementY;
-            Ctx.CurrentMovementY += (Ctx.Gravity * Time.deltaTime);
-            Ctx.AppliedMovementY = (previousYVelocity + Ctx.CurrentMovementY) * 0.5f;
-        }
+        Ctx.GravityHandler.HandleJumpGravity(Ctx);
+    }
+    
+    public void HandleRotation()
+    {
+        Ctx.RotationHandler.HandleRotation(Ctx);
+    }
+    
+    public void HandleMovement()
+    {
+        Ctx.MovementHandler.HandleMovement(Ctx);
     }
 }

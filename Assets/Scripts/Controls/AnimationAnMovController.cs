@@ -24,7 +24,6 @@ public class AnimationAnMovController : MonoBehaviour
     private float groundedGravity = -0.05f;
 
     private bool isJumpPressed = false;
-    private bool isJumping = false;
     private float initialJumpVelocity;
     [SerializeField] private float maxJumpHeight = 4.0f;
     [SerializeField] private float maxJumpTime = 0.5f;

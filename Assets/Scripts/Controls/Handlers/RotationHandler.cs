@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RotationHandler
 {
-    public void HandleRotation(PlayerStateMachine player)
+    public void HandleRotation(PlayerController player)
     {
         Vector3 positionToLookAt = new Vector3(player.CurrentMovementInput.x,0,0);
         Quaternion currentRotation = player.transform.rotation;

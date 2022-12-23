@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovingState : PlayerBaseState
 {
-    public PlayerMovingState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerMovingState(PlayerController currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) {}
     
     public override void EnterState()
@@ -18,10 +18,6 @@ public class PlayerMovingState : PlayerBaseState
 
     public override void ExitState()
     {
-        // if (!Ctx.IsMovementPressed)
-        // {
-        //     SetSubState(Factory.Idle());
-        // };
     }
 
     public override void CheckSwitchStates()

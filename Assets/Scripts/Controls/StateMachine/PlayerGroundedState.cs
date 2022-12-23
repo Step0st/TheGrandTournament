@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
-public class PlayerGroundedState : PlayerBaseState, IRootState
+public class PlayerGroundedState : PlayerBaseState, IGravityHandler, IRotationHandler, IMovementHandler
 {
-    public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+    public PlayerGroundedState(PlayerController currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory)
     {
         IsRootState = true;
@@ -16,6 +17,8 @@ public class PlayerGroundedState : PlayerBaseState, IRootState
 
     public override void UpdateState()
     {
+        HandleMovement();
+        HandleRotation();
         CheckSwitchStates();
     }
 
@@ -51,7 +54,16 @@ public class PlayerGroundedState : PlayerBaseState, IRootState
 
     public void HandleGravity()
     {
-        Ctx.CurrentMovementY = Ctx.Gravity;
-        Ctx.AppliedMovementY = Ctx.Gravity;
+        Ctx.GravityHandler.HandleGroundedGravity(Ctx);
+    }
+
+    public void HandleRotation()
+    {
+        Ctx.RotationHandler.HandleRotation(Ctx);
+    }
+    
+    public void HandleMovement()
+    {
+        Ctx.MovementHandler.HandleMovement(Ctx);
     }
 }

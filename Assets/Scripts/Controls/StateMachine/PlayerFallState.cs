@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFallState : PlayerBaseState, IRootState
+public class PlayerFallState : PlayerBaseState, IGravityHandler, IRotationHandler, IMovementHandler
 {
-
-
-    public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
+    public PlayerFallState(PlayerController currentContext, PlayerStateFactory playerStateFactory) 
         : base(currentContext, playerStateFactory)
     {
         IsRootState = true;
@@ -20,6 +16,8 @@ public class PlayerFallState : PlayerBaseState, IRootState
     public override void UpdateState()
     {
         HandleGravity();
+        HandleMovement();
+        HandleRotation();
         CheckSwitchStates();
     }
 
@@ -54,8 +52,16 @@ public class PlayerFallState : PlayerBaseState, IRootState
 
     public void HandleGravity()
     {
-        float previousYVelocity = Ctx.CurrentMovementY;
-        Ctx.CurrentMovementY += Ctx.Gravity * Time.deltaTime;
-        Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * 0.5f, -20f);
+        Ctx.GravityHandler.HandleFallGravity(Ctx);
+    }
+    
+    public void HandleRotation()
+    {
+        Ctx.RotationHandler.HandleRotation(Ctx);
+    }
+
+    public void HandleMovement()
+    {
+        Ctx.MovementHandler.HandleMovement(Ctx);
     }
 }

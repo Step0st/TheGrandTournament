@@ -5,6 +5,8 @@ Logs/
 Temp/
 Debug/
 UserSettings/
+_windows/
+codestyles/
 
 *.sln
 *.csproj
