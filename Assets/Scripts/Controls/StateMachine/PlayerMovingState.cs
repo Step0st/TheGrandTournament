@@ -7,12 +7,12 @@ public class PlayerMovingState : PlayerBaseState
     
     public override void EnterState()
     {
-        Ctx.Animator.SetBool(Ctx.IsMovingHash, true);
+        Ctx.Animator.SetBool(Ctx.PlayerAnimations.IsMovingHash, true);
     }
 
     public override void UpdateState()
     {
-        Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x * Ctx.Speed;
+        Ctx.PlayerMovementController.AppliedMovementX = Ctx.PlayerMovementController.CurrentMovementInput.x * Ctx.Speed;
         CheckSwitchStates();
     }
 
@@ -22,7 +22,7 @@ public class PlayerMovingState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsMovementPressed)
+        if (!Ctx.PlayerMovementController.IsMovementPressed)
         {
             SwitchState(Factory.Idle());
         }

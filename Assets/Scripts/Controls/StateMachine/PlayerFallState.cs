@@ -32,7 +32,7 @@ public class PlayerFallState : PlayerBaseState, IGravityHandler, IRotationHandle
             SwitchState(Factory.Grounded());
         }
 
-        if (Ctx.IsMovementPressed)
+        if (Ctx.PlayerMovementController.IsMovementPressed)
         {
             SwitchState(Factory.Moving());
         }
@@ -40,7 +40,7 @@ public class PlayerFallState : PlayerBaseState, IGravityHandler, IRotationHandle
 
     public override void InitializeSubState()
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.PlayerMovementController.IsMovementPressed)
         {
             SetSubState(Factory.Moving());
         }

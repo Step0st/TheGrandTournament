@@ -7,9 +7,9 @@ public class PlayerIdleState : PlayerBaseState
     
     public override void EnterState()
     {
-        Ctx.Animator.SetBool(Ctx.IsMovingHash, false);
-        Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
-        Ctx.AppliedMovementX = 0;
+        Ctx.Animator.SetBool(Ctx.PlayerAnimations.IsMovingHash, false);
+        Ctx.Animator.SetBool(Ctx.PlayerAnimations.IsJumpingHash, false);
+        Ctx.PlayerMovementController.AppliedMovementX = 0;
     }
 
     public override void UpdateState()
@@ -23,7 +23,7 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.PlayerMovementController.IsMovementPressed)
         {
             SwitchState(Factory.Moving());
         }

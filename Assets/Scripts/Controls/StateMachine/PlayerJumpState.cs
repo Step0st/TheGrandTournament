@@ -25,10 +25,10 @@ public class PlayerJumpState : PlayerBaseState, IGravityHandler, IRotationHandle
 
     public override void ExitState()
     {
-        Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
-        if (Ctx.IsJumpPressed)
+        Ctx.Animator.SetBool(Ctx.PlayerAnimations.IsJumpingHash, false);
+        if (Ctx.PlayerJumpController.IsJumpPressed)
         {
-            Ctx.RequireNewJumpPress = true;
+            Ctx.PlayerJumpController.RequireNewJumpPress = true;
         }
     }
 
@@ -42,7 +42,7 @@ public class PlayerJumpState : PlayerBaseState, IGravityHandler, IRotationHandle
 
     public override void InitializeSubState()
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.PlayerMovementController.IsMovementPressed)
         {
             SetSubState(Factory.Moving());
         }
@@ -55,9 +55,9 @@ public class PlayerJumpState : PlayerBaseState, IGravityHandler, IRotationHandle
     private void HandleJump()
     {
         float initialJumpVelocity = 4 * Ctx.MaxJumpHeight / Ctx.MaxJumpTime;
-        Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
-        Ctx.CurrentMovementY = initialJumpVelocity;
-        Ctx.AppliedMovementY = initialJumpVelocity;
+        Ctx.Animator.SetBool(Ctx.PlayerAnimations.IsJumpingHash, true);
+        Ctx.PlayerMovementController.CurrentMovementY = initialJumpVelocity;
+        Ctx.PlayerMovementController.AppliedMovementY = initialJumpVelocity;
         Ctx.Gravity = (-2 * Ctx.MaxJumpHeight) / Mathf.Pow(Ctx.MaxJumpTime/2, 2);
     }
 

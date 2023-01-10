@@ -29,7 +29,7 @@ public class PlayerGroundedState : PlayerBaseState, IGravityHandler, IRotationHa
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
+        if (Ctx.PlayerJumpController.IsJumpPressed && !Ctx.PlayerJumpController.RequireNewJumpPress)
         {
             SwitchState(Factory.Jump());
         }
@@ -42,7 +42,7 @@ public class PlayerGroundedState : PlayerBaseState, IGravityHandler, IRotationHa
 
     public override void InitializeSubState()
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.PlayerMovementController.IsMovementPressed)
         {
             SetSubState(Factory.Moving());
         }

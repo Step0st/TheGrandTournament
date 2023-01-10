@@ -2,6 +2,7 @@ public abstract class PlayerBaseState
 {
     private bool _isRootState = false;
     private PlayerController _ctx;
+    private PlayerJumpController _jumpController;
     private PlayerStateFactory _factory;
     private PlayerBaseState _currentSuperState;
     private PlayerBaseState _currentSubState;
