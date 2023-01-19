@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using Game.Mechanics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class UIGameManager : MonoBehaviour
 {
     [SerializeField] private PauseWindow _pauseWindow;
+    [Inject] private PlayerInputReader _playerInputReader;
 
     private void Start()
     {
+        //_playerInputReader = new PlayerInputReader();
         _pauseWindow.gameObject.SetActive(false);
-        
-        
+    
         _pauseWindow.ContinueEvent += () =>
         {
             _pauseWindow.gameObject.SetActive(false);
@@ -24,14 +26,11 @@ public class UIGameManager : MonoBehaviour
         {
             SceneManager.LoadScene("MainMenu");
         };
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        _playerInputReader.OnMenuButtonPressed += () =>
         {
             _pauseWindow.gameObject.SetActive(true);
             Time.timeScale = 0;
-        }
+        };
     }
 }

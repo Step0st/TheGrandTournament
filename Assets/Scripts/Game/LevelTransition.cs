@@ -1,45 +1,34 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Game
 {
-    public class LevelTransition : MonoBehaviour
+    public class LevelTransition : MonoBehaviour, IInteractable
     {
-        [SerializeField] private GameObject _text;
-        private bool _canGo;
         public enum Destination { Forest, Mountains };
         [Header("Destination")]
-        public Destination LocationToGo;
-        private void OnTriggerEnter(Collider other)
+        public Destination _locationToGo;
+        
+        [SerializeField] private string _prompt;
+        public string InteractionPrompt => _prompt;
+
+        public void Interact()
         {
-            if (other.gameObject.name == "Player")
+            switch (_locationToGo)
             {
-                _text.SetActive(true);
-                _canGo = true;
+                case Destination.Forest:
+                    SceneManager.LoadScene("ForestLocation");
+                    break;
+                case Destination.Mountains:
+                    SceneManager.LoadScene("MountainsLocation");
+                    break;
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        public void ResetInteraction()
         {
-            if (other.gameObject.name == "Player")
-            {
-                _text.SetActive(false);
-                _canGo = false;
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown("e")&& _canGo && LocationToGo == Destination.Forest)
-            {
-                SceneManager.LoadScene("ForestLocation");
-            }
-            
-            if (Input.GetKeyDown("e")&& _canGo && LocationToGo == Destination.Mountains)
-            {
-                SceneManager.LoadScene("MountainsLocation");
-            }
         }
     }
 }

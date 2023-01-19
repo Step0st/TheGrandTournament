@@ -4,30 +4,22 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
 
 namespace Game
 {
-    public class ChestController : MonoBehaviour
+    public class ChestController : MonoBehaviour, IInteractable, IInteractionPrompt
     {
 
         [SerializeField] private Animator _chestAnim;
-        [SerializeField] private GameObject _mText;
-        [SerializeField] private PlayerData _playerData;
-        private bool _chestFlag = false;
+        
+        [Header("Reward")] 
+        [SerializeField] private Equipment EquipmentReward;
 
-        public enum Reward
-        {
-            DoubleJumpBoots,
-            Sword
-        };
-
-        [Header("Reward")] public Reward rewardType;
-
+        [SerializeField] private string _prompt;
+        public string InteractionPrompt => _prompt;
         private void Update()
         {
-            if (Input.GetKeyDown("e") && _chestFlag)
+            /*if (Input.GetKeyDown("e") && _chestFlag)
             {
                 if (rewardType == Reward.DoubleJumpBoots)
                 {
@@ -42,39 +34,19 @@ namespace Game
                    StartCoroutine(LoadMainLocation());
                    SetText(_mText,"You've found a Sword");
                 }
-            }
-
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.name == "Player")
-            {
-                _chestAnim.SetTrigger("open");
-                _chestFlag = true;
-                _mText.SetActive(true);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.gameObject.name == "Player")
-            {
-                _chestAnim.SetTrigger("close");
-                _chestFlag = false;
-                _mText.SetActive(false);
-            }
-        }
-
-        private void SetText(GameObject textObject, string text)
-        {
-            textObject.GetComponent<TextMeshPro>().text = text;
+            }*/
         }
         
         IEnumerator LoadMainLocation()
         { 
             yield return new WaitForSeconds(6f);
             SceneManager.LoadScene("MainLocation");
+        }
+
+        public void Interact()
+        {
+            _chestAnim.SetTrigger("open");
+            StartCoroutine(LoadMainLocation());
         }
     }
 }
