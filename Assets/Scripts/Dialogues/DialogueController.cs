@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class DialogueController : MonoBehaviour, IInteractable, IResetInteractio
     public DialogueData dialogue;
     public CanvasGroup canvasGroup;
     public TMP_Animated animatedText;
+    public Action OnDialogueFinished;
     private int _dialogueIndex;
     
     private enum DialogueSates { StartDialogue, NextPhrase, ExitDialogue};
@@ -33,6 +35,7 @@ public class DialogueController : MonoBehaviour, IInteractable, IResetInteractio
             case DialogueSates.ExitDialogue:
                 FadeUI(false, .2f, 0);
                 ResetDialogueSystem();
+                OnDialogueFinished?.Invoke();
                 break;
         }
     }

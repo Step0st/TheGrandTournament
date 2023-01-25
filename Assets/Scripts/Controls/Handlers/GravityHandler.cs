@@ -24,14 +24,25 @@ public class GravityHandler
         {
             float previousYVelocity = player.PlayerMovementController.CurrentMovementY;
             player.PlayerMovementController.CurrentMovementY += (player.Gravity * fallMultiplier * Time.deltaTime);
-            player.PlayerMovementController.AppliedMovementY = Mathf.Max((previousYVelocity + player.PlayerMovementController.CurrentMovementY) * 0.5f, -20.0f);
+            player.PlayerMovementController.AppliedMovementY =
+                Mathf.Max((previousYVelocity + player.PlayerMovementController.CurrentMovementY) * 0.5f, -20.0f);
         }
         else
         {
             float previousYVelocity = player.PlayerMovementController.CurrentMovementY;
             player.PlayerMovementController.CurrentMovementY += (player.Gravity * Time.deltaTime);
-            player.PlayerMovementController.AppliedMovementY = (previousYVelocity + player.PlayerMovementController.CurrentMovementY) * 0.5f;
+            player.PlayerMovementController.AppliedMovementY =
+                (previousYVelocity + player.PlayerMovementController.CurrentMovementY) * 0.5f;
         }
+    }
+
+    public void HandleDamagedGravity(PlayerController player)
+    {
+        float previousYVelocity = player.PlayerMovementController.CurrentMovementY;
+        player.PlayerMovementController.CurrentMovementY += (player.Gravity * Time.deltaTime);
+        player.PlayerMovementController.AppliedMovementY =
+            (previousYVelocity + player.PlayerMovementController.CurrentMovementY) * 0.3f;
+        //player.PlayerMovementController.AppliedMovementX = -player.PlayerMovementController.AppliedMovementX;
     }
     
     

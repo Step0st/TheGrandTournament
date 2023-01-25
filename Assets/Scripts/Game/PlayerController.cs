@@ -9,7 +9,7 @@ namespace Game
     {
         [SerializeField] private float _movespeed;
         [SerializeField] private float _jumpforce;
-        [SerializeField] private PlayerData _playerData;
+        //[SerializeField] private PlayerData _playerData;
         [SerializeField] private LayerMask Ground;
         [SerializeField] private GameObject _gameSounds;
         [Header("Equipment")]
@@ -28,7 +28,7 @@ namespace Game
 
         void Start()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            /*_rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _sounds = _gameSounds.GetComponent<SoundsManager>();
             if (_playerData.DoubleJump)
@@ -39,7 +39,7 @@ namespace Game
             if (_playerData.IsArmed)
             {
                 _sword.SetActive(true);
-            }
+            }*/
             
         }
 

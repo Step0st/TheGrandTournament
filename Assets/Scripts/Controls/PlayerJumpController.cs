@@ -13,10 +13,16 @@ public class PlayerJumpController
     }
     
     private bool _isJumpPressed;
+    private bool _isReadyForSecondJump;
+    private bool _isSecondJumpPerformed;
     private bool _requireNewJumpPress = false;
     
     public bool IsJumpPressed => _isJumpPressed;
     public bool RequireNewJumpPress { get { return _requireNewJumpPress;} set { _requireNewJumpPress = value; }}
+    public bool IsReadyForSecondJump { get { return _isReadyForSecondJump;} set { _isReadyForSecondJump = value; }}
+    public bool IsSecondJumpPerformed { get { return _isSecondJumpPerformed;} set { _isSecondJumpPerformed = value; }}
+
+
     
     
 }

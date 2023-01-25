@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72e8b87f5b04217921654183f7b62e9, type: 3}
-  m_Name: BannerDialogue
+  m_Script: {fileID: 11500000, guid: 651cffd5dd6d42bc9260ae0cc3df4345, type: 3}
+  m_Name: PlayerDef
   m_EditorClassIdentifier: 
-  conversationBlock:
-  - The Grand Tournament will start soon
-  - Noble warriors and valiant hearts
-  - Find equipment and go to the city
+  _maxHealth: 6

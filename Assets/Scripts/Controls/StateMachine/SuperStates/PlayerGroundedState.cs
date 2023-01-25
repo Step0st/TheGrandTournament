@@ -38,6 +38,11 @@ public class PlayerGroundedState : PlayerBaseState, IGravityHandler, IRotationHa
         {
             SwitchState(Factory.Fall());
         }
+
+        if (Ctx.PlayerDamageController.IsDamaged)
+        {
+            SwitchState(Factory.Damaged());
+        }
     }
 
     public override void InitializeSubState()

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e27dbc6aaf6ae4c8759dbdfe2bda3b, type: 3}
-  m_Name: MainPlayerData
+  m_Script: {fileID: 11500000, guid: a72e8b87f5b04217921654183f7b62e9, type: 3}
+  m_Name: MountainChestText
   m_EditorClassIdentifier: 
-  _doubleJump: 0
-  _isArmed: 0
+  conversationBlock:
+  - You found Shield and Sword

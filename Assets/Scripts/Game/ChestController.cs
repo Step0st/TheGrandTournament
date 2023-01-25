@@ -1,52 +1,61 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Game
+[RequireComponent(typeof(DialogueController))]
+public class ChestController : MonoBehaviour, IInteractable, IResetInteraction
 {
-    public class ChestController : MonoBehaviour, IInteractable, IInteractionPrompt
+    [SerializeField] private Animator _chestAnim;
+
+    [Header("Reward")] [SerializeField] private Equipment equipmentReward;
+
+    private GameSession _session;
+    private DialogueController _dialogueController;
+
+    private void Start()
     {
+        _session = FindObjectOfType<GameSession>();
+        _dialogueController = GetComponent<DialogueController>();
+        _dialogueController.OnDialogueFinished += StartLevelTransition;
+    }
 
-        [SerializeField] private Animator _chestAnim;
-        
-        [Header("Reward")] 
-        [SerializeField] private Equipment EquipmentReward;
+    public void Interact()
+    {
+        _chestAnim.SetTrigger("open");
+        GiveReward();
+    }
 
-        [SerializeField] private string _prompt;
-        public string InteractionPrompt => _prompt;
-        private void Update()
+    private void StartLevelTransition()
+    {
+        StartCoroutine(LoadMainLocation());
+    }
+
+    IEnumerator LoadMainLocation()
+    {
+        yield return new WaitForSeconds(4f);
+        SceneManager.LoadScene("MainLocation");
+    }
+
+    private void GiveReward()
+    {
+        switch (equipmentReward)
         {
-            /*if (Input.GetKeyDown("e") && _chestFlag)
-            {
-                if (rewardType == Reward.DoubleJumpBoots)
-                {
-                    _playerData.DoubleJump = true;
-                    StartCoroutine(LoadMainLocation());
-                    SetText(_mText,"You've found a Double Jump Boots");
-                }
-                
-                if (rewardType == Reward.Sword)
-                {
-                   _playerData.IsArmed = true;
-                   StartCoroutine(LoadMainLocation());
-                   SetText(_mText,"You've found a Sword");
-                }
-            }*/
+            case Equipment.DoubleJumpBoots:
+                _session.Data.isDoubleJumpBoots = true;
+                break;
+            case Equipment.Sword:
+                _session.Data.isArmed = true;
+                break;
         }
-        
-        IEnumerator LoadMainLocation()
-        { 
-            yield return new WaitForSeconds(6f);
-            SceneManager.LoadScene("MainLocation");
-        }
+    }
 
-        public void Interact()
-        {
-            _chestAnim.SetTrigger("open");
-            StartCoroutine(LoadMainLocation());
-        }
+    private void OnDestroy()
+    {
+        _dialogueController.OnDialogueFinished -= StartLevelTransition;
+    }
+
+    public void ResetInteraction()
+    {
+        StartLevelTransition();
     }
 }
